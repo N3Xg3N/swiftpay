@@ -1,10 +1,9 @@
-# AI Prompt in claude
-
-I want to build a project that takes a pacs009 and creates payment object - one for the correct payment and another for the incorrect payment. The message will come via messaging queue, it should be validated against xsd. The project should be in springboot and use open source technology for mq and db. Use the spring provided transactons as required.  Provide me all the steps to setup the project locally. I want to be able to start it with one click. Provide me with few samples to test. If the input is valid is should be stored in db with UUID / transaction id and then the message should be converted to domain payment objerct and then it should be sent to the queue. Create appropriate xsd as required for domain xml. This should be similar to what any FX system would handle the incoming payment messages.,  Write unit test cases.
-
-
 
 # FX Payment Processor
+
+## AI Prompt in claude
+
+I want to build a project that takes a pacs009 and creates payment object - one for the correct payment and another for the incorrect payment. The message will come via messaging queue, it should be validated against xsd. The project should be in springboot and use open source technology for mq and db. Use the spring provided transactons as required.  Provide me all the steps to setup the project locally. I want to be able to start it with one click. Provide me with few samples to test. If the input is valid is should be stored in db with UUID / transaction id and then the message should be converted to domain payment objerct and then it should be sent to the queue. Create appropriate xsd as required for domain xml. This should be similar to what any FX system would handle the incoming payment messages.,  Write unit test cases.
 
 An ISO 20022 **pacs.009** (Financial Institution Credit Transfer) processor built with Spring Boot 3, embedded ActiveMQ Artemis, and H2/PostgreSQL.
 
