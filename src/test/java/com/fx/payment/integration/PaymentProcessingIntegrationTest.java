@@ -1,0 +1,162 @@
+package com.fx.payment.integration;
+
+import com.fx.payment.config.JmsConfig;
+import com.fx.payment.entity.PaymentMessage;
+import com.fx.payment.entity.PaymentStatus;
+import com.fx.payment.repository.PaymentMessageRepository;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.test.context.ActiveProfiles;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.awaitility.Awaitility.*;
+
+/**
+ * End-to-end integration test using the full Spring Boot context with:
+ * <ul>
+ *   <li>Embedded ActiveMQ Artemis broker</li>
+ *   <li>H2 in-memory database</li>
+ * </ul>
+ *
+ * Messages are sent directly to the inbound JMS queue and the resulting
+ * database state is asserted after async processing completes.
+ * Queue assertions use a short receive-timeout (configured in test application.yml).
+ */
+@SpringBootTest
+@ActiveProfiles("test")
+class PaymentProcessingIntegrationTest {
+
+    @Autowired private JmsTemplate jmsTemplate;
+    @Autowired private PaymentMessageRepository repository;
+
+    // ── Valid message flow ────────────────────────────────────────────────
+
+    @Test
+    @DisplayName("Valid pacs.009 (USD/GBP) should be stored with PROCESSED status")
+    void validUsdGbpMessageShouldBeStoredAsProcessed() throws Exception {
+        String rawXml = loadXml("messages/valid-pacs009.xml");
+
+        jmsTemplate.convertAndSend(JmsConfig.INBOUND_QUEUE, rawXml);
+
+        await().atMost(10, TimeUnit.SECONDS)
+                .untilAsserted(() -> {
+                    var record = repository.findByTransactionId("TXN-20240415-001");
+                    assertThat(record).isPresent();
+                    assertThat(record.get().getStatus()).isEqualTo(PaymentStatus.PROCESSED);
+                    assertThat(record.get().getSettlementCurrency()).isEqualTo("USD");
+                    assertThat(record.get().getDebtorBic()).isEqualTo("BARCGB22");
+                    assertThat(record.get().getId()).isNotNull();
+                });
+    }
+
+    @Test
+    @DisplayName("Valid pacs.009 (EUR/JPY) should be stored with PROCESSED status")
+    void validEurJpyMessageShouldBeStoredAsProcessed() throws Exception {
+        String rawXml = loadXml("messages/valid-pacs009-eurjpy.xml");
+
+        jmsTemplate.convertAndSend(JmsConfig.INBOUND_QUEUE, rawXml);
+
+        await().atMost(10, TimeUnit.SECONDS)
+                .untilAsserted(() -> {
+                    var record = repository.findByTransactionId("TXN-20240415-002");
+                    assertThat(record).isPresent();
+                    assertThat(record.get().getStatus()).isEqualTo(PaymentStatus.PROCESSED);
+                    assertThat(record.get().getSettlementCurrency()).isEqualTo("JPY");
+                });
+    }
+
+    @Test
+    @DisplayName("Valid message should produce a domain payment XML on the valid queue")
+    void validMessageShouldProduceDomainPaymentOnValidQueue() throws Exception {
+        String rawXml = loadXml("messages/valid-pacs009-eurjpy.xml");
+
+        jmsTemplate.convertAndSend(JmsConfig.INBOUND_QUEUE, rawXml);
+
+        // Wait for the message to be processed and appear on the valid queue
+        await().atMost(10, TimeUnit.SECONDS)
+                .untilAsserted(() -> {
+                    // First confirm DB state so we know processing is done
+                    var record = repository.findByTransactionId("TXN-20240415-002");
+                    assertThat(record).isPresent();
+                    assertThat(record.get().getStatus()).isEqualTo(PaymentStatus.PROCESSED);
+                });
+
+        // Now read from the valid queue (2s timeout configured in test application.yml)
+        String domainXml = (String) jmsTemplate.receiveAndConvert(JmsConfig.VALID_QUEUE);
+        assertThat(domainXml).isNotNull();
+        assertThat(domainXml).contains("DomainPayment");
+        assertThat(domainXml).contains("TXN-20240415-002");
+        assertThat(domainXml).contains("JPY");
+    }
+
+    @Test
+    @DisplayName("Invalid pacs.009 (missing TxId) should be stored with INVALID status")
+    void invalidMissingTxIdShouldBeStoredAsInvalid() throws Exception {
+        String rawXml = loadXml("messages/invalid-pacs009-missing-txid.xml");
+        long countBefore = repository.findByStatus(PaymentStatus.INVALID).size();
+
+        jmsTemplate.convertAndSend(JmsConfig.INBOUND_QUEUE, rawXml);
+
+        await().atMost(10, TimeUnit.SECONDS)
+                .untilAsserted(() -> {
+                    List<PaymentMessage> invalids = repository.findByStatus(PaymentStatus.INVALID);
+                    assertThat(invalids.size()).isGreaterThan((int) countBefore);
+                    assertThat(invalids.get(invalids.size() - 1).getValidationErrors()).isNotBlank();
+                });
+    }
+
+    @Test
+    @DisplayName("Invalid pacs.009 (bad currency code) should be stored with INVALID status")
+    void invalidBadCurrencyCodeShouldBeStoredAsInvalid() throws Exception {
+        String rawXml = loadXml("messages/invalid-pacs009-bad-currency.xml");
+        long countBefore = repository.findByStatus(PaymentStatus.INVALID).size();
+
+        jmsTemplate.convertAndSend(JmsConfig.INBOUND_QUEUE, rawXml);
+
+        await().atMost(10, TimeUnit.SECONDS)
+                .untilAsserted(() -> {
+                    assertThat(repository.findByStatus(PaymentStatus.INVALID).size())
+                            .isGreaterThan((int) countBefore);
+                });
+    }
+
+    @Test
+    @DisplayName("Valid message: UUID in DB should match UUID in domain XML on valid queue")
+    void uuidShouldBeConsistentBetweenDbAndDomainXml() throws Exception {
+        String rawXml = loadXml("messages/valid-pacs009.xml");
+
+        jmsTemplate.convertAndSend(JmsConfig.INBOUND_QUEUE, rawXml);
+
+        // Step 1: wait for DB to be updated
+        await().atMost(10, TimeUnit.SECONDS)
+                .untilAsserted(() -> {
+                    var record = repository.findByTransactionId("TXN-20240415-001");
+                    assertThat(record).isPresent();
+                    assertThat(record.get().getStatus()).isEqualTo(PaymentStatus.PROCESSED);
+                });
+
+        // Step 2: get UUID from DB
+        String persistedUuid = repository.findByTransactionId("TXN-20240415-001")
+                .orElseThrow().getId().toString();
+
+        // Step 3: read domain XML and verify UUID present (2s receive timeout)
+        String domainXml = (String) jmsTemplate.receiveAndConvert(JmsConfig.VALID_QUEUE);
+        assertThat(domainXml).contains(persistedUuid);
+    }
+
+    // ── Helper ────────────────────────────────────────────────────────────
+
+    private String loadXml(String path) throws Exception {
+        try (var is = getClass().getClassLoader().getResourceAsStream(path)) {
+            assertThat(is).as("Resource not found: " + path).isNotNull();
+            return new String(is.readAllBytes(), StandardCharsets.UTF_8);
+        }
+    }
+}

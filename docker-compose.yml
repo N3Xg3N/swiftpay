@@ -1,0 +1,55 @@
+version: '3.9'
+
+# ══════════════════════════════════════════════════════════════════════════
+# FX Payment Processor – Infrastructure Stack
+# Open-source components only:
+#   • Apache ActiveMQ Artemis  (JMS broker)
+#   • PostgreSQL               (database)
+#
+# Usage:
+#   docker-compose up -d               → start infrastructure
+#   docker-compose down -v             → stop and remove volumes
+#   docker-compose logs -f artemis     → tail broker logs
+# ══════════════════════════════════════════════════════════════════════════
+
+services:
+
+  # ── ActiveMQ Artemis ─────────────────────────────────────────────────────
+  artemis:
+    image: apache/activemq-artemis:2.31.2
+    container_name: fx-artemis
+    ports:
+      - "61616:61616"   # CORE/AMQP/OpenWire
+      - "8161:8161"     # Web console  →  http://localhost:8161 (admin/admin)
+    environment:
+      ARTEMIS_USER: artemis
+      ARTEMIS_PASSWORD: artemis
+    volumes:
+      - artemis-data:/var/lib/artemis-instance
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8161/"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ── PostgreSQL ────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: fx-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB:       fxpayments
+      POSTGRES_USER:     fxuser
+      POSTGRES_PASSWORD: fxpassword
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fxuser -d fxpayments"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  artemis-data:
+  postgres-data:
