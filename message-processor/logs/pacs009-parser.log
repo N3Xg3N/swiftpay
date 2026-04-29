@@ -1,0 +1,122 @@
+2026-04-28 21:53:14.463 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:14.583 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:14.617 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Successfully converted 2 transactions in 32 ms
+2026-04-28 21:53:14.628 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:14.644 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:14.652 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Successfully converted 2 transactions in 4 ms
+2026-04-28 21:53:14.664 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:14.668 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Successfully converted 2 transactions in 3 ms
+2026-04-28 21:53:14.671 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:14.681 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Successfully converted 2 transactions in 9 ms
+2026-04-28 21:53:14.686 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:14.689 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Successfully converted 2 transactions in 2 ms
+2026-04-28 21:53:14.698 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:14.701 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Successfully converted 2 transactions in 2 ms
+2026-04-28 21:53:14.703 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:14.706 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:14.713 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Successfully converted 2 transactions in 6 ms
+2026-04-28 21:53:14.715 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:14.719 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Successfully converted 2 transactions in 3 ms
+2026-04-28 21:53:14.721 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:14.730 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:14.735 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Successfully converted 2 transactions in 5 ms
+2026-04-28 21:53:14.735 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Successfully converted 2 transactions in 0 ms
+2026-04-28 21:53:14.735 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:14.748 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Successfully converted 2 transactions in 5 ms
+2026-04-28 21:53:34.928 [main] INFO  c.p.parser.Pacs009ParserApplication - Starting pacs.009 parser
+2026-04-28 21:53:34.930 [main] INFO  c.p.parser.Pacs009ParserApplication - Input file: src/test/resources/samples/sample-pacs009.xml
+2026-04-28 21:53:34.931 [main] INFO  c.p.parser.Pacs009ParserApplication - Output file: output.xml
+2026-04-28 21:53:34.932 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Initialized Pacs009ToSimplifiedConverter
+2026-04-28 21:53:34.933 [main] INFO  c.p.parser.Pacs009ParserApplication - Validating input...
+2026-04-28 21:53:34.938 [main] INFO  c.p.parser.Pacs009ParserApplication - Validation passed
+2026-04-28 21:53:34.939 [main] INFO  c.p.parser.Pacs009ParserApplication - Converting...
+2026-04-28 21:53:34.952 [main] INFO  c.p.p.c.Pacs009ToSimplifiedConverter - Successfully converted 2 transactions in 13 ms
+2026-04-28 21:53:34.953 [main] INFO  c.p.parser.Pacs009ParserApplication - Conversion successful: 2 transactions
+2026-04-28 21:53:34.973 [main] INFO  c.p.parser.Pacs009ParserApplication - Output written to: output.xml
+2026-04-28 21:53:34.974 [main] INFO  c.p.parser.Pacs009ParserApplication - Processing completed successfully
+2026-04-28 21:57:01.790 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:01.854 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:01.876 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 20 ms
+2026-04-28 21:57:01.884 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:01.897 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:01.902 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 4 ms
+2026-04-28 21:57:01.911 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:01.915 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 4 ms
+2026-04-28 21:57:01.921 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:01.926 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 4 ms
+2026-04-28 21:57:01.931 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:01.937 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 5 ms
+2026-04-28 21:57:01.940 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:01.944 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 2 ms
+2026-04-28 21:57:01.947 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:01.950 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:01.956 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 5 ms
+2026-04-28 21:57:01.959 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:01.963 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 3 ms
+2026-04-28 21:57:01.965 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:01.970 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:01.974 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 3 ms
+2026-04-28 21:57:01.977 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 3 ms
+2026-04-28 21:57:01.979 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:01.982 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 2 ms
+2026-04-28 21:57:18.348 [main] INFO  c.p.p.MessageProcessorApplication - Starting pacs.009 parser
+2026-04-28 21:57:18.349 [main] INFO  c.p.p.MessageProcessorApplication - Input file: src/test/resources/samples/sample-pacs009.xml
+2026-04-28 21:57:18.350 [main] INFO  c.p.p.MessageProcessorApplication - Output file: output-renamed.xml
+2026-04-28 21:57:18.356 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 21:57:18.357 [main] INFO  c.p.p.MessageProcessorApplication - Validating input...
+2026-04-28 21:57:18.365 [main] INFO  c.p.p.MessageProcessorApplication - Validation passed
+2026-04-28 21:57:18.366 [main] INFO  c.p.p.MessageProcessorApplication - Converting...
+2026-04-28 21:57:18.382 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 16 ms
+2026-04-28 21:57:18.382 [main] INFO  c.p.p.MessageProcessorApplication - Conversion successful: 2 transactions
+2026-04-28 21:57:18.412 [main] INFO  c.p.p.MessageProcessorApplication - Output written to: output-renamed.xml
+2026-04-28 21:57:18.412 [main] INFO  c.p.p.MessageProcessorApplication - Processing completed successfully
+2026-04-28 22:02:41.112 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:41.184 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:41.206 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 22 ms
+2026-04-28 22:02:41.211 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:41.225 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:41.228 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 2 ms
+2026-04-28 22:02:41.237 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:41.240 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 2 ms
+2026-04-28 22:02:41.241 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:41.243 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 1 ms
+2026-04-28 22:02:41.247 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:41.253 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 4 ms
+2026-04-28 22:02:41.255 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:41.258 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 2 ms
+2026-04-28 22:02:41.259 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:41.261 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:41.263 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 2 ms
+2026-04-28 22:02:41.269 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:41.272 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 2 ms
+2026-04-28 22:02:41.273 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:41.275 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:41.277 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 1 ms
+2026-04-28 22:02:41.279 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 1 ms
+2026-04-28 22:02:41.282 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:41.287 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 2 ms
+2026-04-28 22:02:53.542 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:53.648 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:53.672 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 20 ms
+2026-04-28 22:02:53.685 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:53.708 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:53.713 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 4 ms
+2026-04-28 22:02:53.726 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:53.737 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 10 ms
+2026-04-28 22:02:53.740 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:53.744 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 3 ms
+2026-04-28 22:02:53.755 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:53.759 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 3 ms
+2026-04-28 22:02:53.762 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:53.771 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 8 ms
+2026-04-28 22:02:53.774 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:53.776 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:53.779 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 2 ms
+2026-04-28 22:02:53.786 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:53.790 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 3 ms
+2026-04-28 22:02:53.792 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:53.795 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:53.802 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 6 ms
+2026-04-28 22:02:53.806 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 4 ms
+2026-04-28 22:02:53.808 [main] INFO  c.p.p.c.PaymentMessageConverter - Initialized PaymentMessageConverter
+2026-04-28 22:02:53.811 [main] INFO  c.p.p.c.PaymentMessageConverter - Successfully converted 2 transactions in 2 ms

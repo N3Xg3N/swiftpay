@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.009.001.08">
+    <FIToFIFrdLnsTrf>
+        <GrpHdr>
+            <MsgId>MSG-20250101-001</MsgId>
+            <CreDtTm>2025-01-01T09:30:00Z</CreDtTm>
+            <NbOfTxs>2</NbOfTxs>
+            <SttlmInf>
+                <SttlmMtd>INGA</SttlmMtd>
+            </SttlmInf>
+        </GrpHdr>
+        
+        <!-- First Transaction -->
+        <CdtTrfTxInf>
+            <PmtId>
+                <InstrId>INSTR-001</InstrId>
+                <EndToEndId>E2E-001</EndToEndId>
+                <TxId>TXN-001</TxId>
+                <UETR>550e8400-e29b-41d4-a716-446655440001</UETR>
+            </PmtId>
+            <IntrBkSttlmAmt Ccy="USD">1000000.00</IntrBkSttlmAmt>
+            <IntrBkSttlmDt>2025-01-02</IntrBkSttlmDt>
+            <SttlmPrty>NORM</SttlmPrty>
+            
+            <!-- Debtor -->
+            <Dbtr>
+                <FinInstnId>
+                    <BICFI>DEUTDEDD</BICFI>
+                </FinInstnId>
+            </Dbtr>
+            
+            <!-- Debtor Account -->
+            <DbtrAcct>
+                <Id>
+                    <IBAN>DE75512108001234567890</IBAN>
+                </Id>
+                <Ccy>EUR</Ccy>
+            </DbtrAcct>
+            
+            <!-- Creditor -->
+            <Cdtr>
+                <FinInstnId>
+                    <BICFI>PBNKUS33</BICFI>
+                </FinInstnId>
+            </Cdtr>
+            
+            <!-- Creditor Account -->
+            <CdtrAcct>
+                <Id>
+                    <IBAN>US90010000000000000001</IBAN>
+                </Id>
+                <Ccy>USD</Ccy>
+            </CdtrAcct>
+            
+            <!-- Remittance Info -->
+            <RmtInf>
+                <Ustrd>Payment for Invoice INV-2025-001 due 2025-01-15</Ustrd>
+                <Strd>
+                    <RfrdDocInf>
+                        <Tp>
+                            <Cd>CINV</Cd>
+                        </Tp>
+                        <Nb>INV-2025-001</Nb>
+                        <RltdDt>2024-12-01</RltdDt>
+                    </RfrdDocInf>
+                    <CdtrRefInf>
+                        <Ref>REF-001</Ref>
+                    </CdtrRefInf>
+                </Strd>
+            </RmtInf>
+        </CdtTrfTxInf>
+        
+        <!-- Second Transaction -->
+        <CdtTrfTxInf>
+            <PmtId>
+                <InstrId>INSTR-002</InstrId>
+                <EndToEndId>E2E-002</EndToEndId>
+                <TxId>TXN-002</TxId>
+                <UETR>550e8400-e29b-41d4-a716-446655440002</UETR>
+            </PmtId>
+            <IntrBkSttlmAmt Ccy="EUR">500000.00</IntrBkSttlmAmt>
+            <IntrBkSttlmDt>2025-01-03</IntrBkSttlmDt>
+            <SttlmPrty>HIGH</SttlmPrty>
+            
+            <!-- Debtor -->
+            <Dbtr>
+                <FinInstnId>
+                    <BICFI>BNPAFRPP</BICFI>
+                    <Nm>BNP Paribas</Nm>
+                </FinInstnId>
+            </Dbtr>
+            
+            <!-- Debtor Account -->
+            <DbtrAcct>
+                <Id>
+                    <IBAN>FR1420041010050500013M02606</IBAN>
+                </Id>
+                <Ccy>EUR</Ccy>
+                <Nm>Treasury Account</Nm>
+            </DbtrAcct>
+            
+            <!-- Creditor -->
+            <Cdtr>
+                <FinInstnId>
+                    <BICFI>SOFFFRPP</BICFI>
+                    <Nm>Societe Generale</Nm>
+                </FinInstnId>
+            </Cdtr>
+            
+            <!-- Creditor Account -->
+            <CdtrAcct>
+                <Id>
+                    <IBAN>FR1420041010050500013M02607</IBAN>
+                </Id>
+                <Ccy>EUR</Ccy>
+                <Nm>Corporate Payment Account</Nm>
+            </CdtrAcct>
+            
+            <!-- Remittance Info -->
+            <RmtInf>
+                <Ustrd>Salary payments for January 2025</Ustrd>
+            </RmtInf>
+        </CdtTrfTxInf>
+        
+    </FIToFIFrdLnsTrf>
+</Document>

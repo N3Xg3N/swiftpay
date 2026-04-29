@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Internal Simplified Payment Message Format
+  
+  This XSD defines a simplified, internal-use-only XML format
+  for representing payment transactions. It abstracts away the
+  complexity of ISO 20022 to provide a cleaner, more usable format
+  for downstream business logic.
+  
+  Design goals:
+  - Flat, simple structure
+  - No nested financial institution details
+  - Clearly separated transaction parties
+  - Essential payment information only
+  - Easy to map to legacy systems
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="urn:com:payments:simplified:v1"
+           xmlns:pay="urn:com:payments:simplified:v1"
+           elementFormDefault="qualified">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         ROOT ELEMENT
+         ═══════════════════════════════════════════════════════════ -->
+    <xs:element name="PaymentBatch" type="pay:PaymentBatch"/>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         PAYMENT BATCH (Top-level container)
+         ═══════════════════════════════════════════════════════════ -->
+    <xs:complexType name="PaymentBatch">
+        <xs:sequence>
+            <xs:element name="BatchHeader" type="pay:BatchHeader"/>
+            <xs:element name="Transaction" type="pay:Transaction"
+                        maxOccurs="unbounded"/>
+            <xs:element name="BatchFooter" type="pay:BatchFooter" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="version" type="xs:string" default="1.0"/>
+    </xs:complexType>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         BATCH HEADER
+         ═══════════════════════════════════════════════════════════ -->
+    <xs:complexType name="BatchHeader">
+        <xs:sequence>
+            <xs:element name="BatchId"          type="xs:string"/>
+            <xs:element name="CreationDateTime" type="xs:dateTime"/>
+            <xs:element name="TransactionCount" type="xs:integer"/>
+            <xs:element name="BatchCurrency"    type="xs:string" minOccurs="0"/>
+            <xs:element name="BatchAmount"      type="xs:decimal" minOccurs="0"/>
+            <xs:element name="SettlementMethod" type="pay:SettlementMethodType" minOccurs="0"/>
+            <xs:element name="SettlementDate"   type="xs:date" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="SettlementMethodType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="INDA"/>
+            <xs:enumeration value="INGA"/>
+            <xs:enumeration value="COVE"/>
+            <xs:enumeration value="CLRG"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         TRANSACTION (Core payment entity)
+         ═══════════════════════════════════════════════════════════ -->
+    <xs:complexType name="Transaction">
+        <xs:sequence>
+            <!-- Transaction Identification -->
+            <xs:element name="TransactionId"      type="xs:string"/>
+            <xs:element name="EndToEndId"         type="xs:string" minOccurs="0"/>
+            <xs:element name="InstructionId"      type="xs:string" minOccurs="0"/>
+            <xs:element name="UETR"               type="xs:string" minOccurs="0"
+                        comment="Unique End-to-End Transaction Reference (UUID v4)"/>
+
+            <!-- Amount and Currency -->
+            <xs:element name="Amount"             type="xs:decimal"/>
+            <xs:element name="Currency"           type="xs:string"/>
+            <xs:element name="InstructedAmount"   type="xs:decimal" minOccurs="0"
+                        comment="Amount in creditor's currency if different"/>
+            <xs:element name="ExchangeRate"       type="xs:decimal" minOccurs="0"/>
+
+            <!-- Dates and Priority -->
+            <xs:element name="TransactionDate"    type="xs:date" minOccurs="0"/>
+            <xs:element name="SettlementDate"     type="xs:date" minOccurs="0"/>
+            <xs:element name="Priority"           type="pay:PriorityType" minOccurs="0"/>
+            <xs:element name="DebitDateTime"      type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="CreditDateTime"     type="xs:dateTime" minOccurs="0"/>
+
+            <!-- Debtor (Payer) -->
+            <xs:element name="Debtor"             type="pay:Party"/>
+            <xs:element name="DebtorAccount"      type="pay:Account" minOccurs="0"/>
+            <xs:element name="DebtorAgent"        type="pay:Agent" minOccurs="0"/>
+            <xs:element name="UltimateDebtor"     type="pay:Party" minOccurs="0"/>
+
+            <!-- Creditor (Payee) -->
+            <xs:element name="Creditor"           type="pay:Party"/>
+            <xs:element name="CreditorAccount"    type="pay:Account" minOccurs="0"/>
+            <xs:element name="CreditorAgent"      type="pay:Agent" minOccurs="0"/>
+            <xs:element name="UltimateCreditor"   type="pay:Party" minOccurs="0"/>
+
+            <!-- Intermediaries -->
+            <xs:element name="InstructingAgent"   type="pay:Agent" minOccurs="0"/>
+            <xs:element name="InstructedAgent"    type="pay:Agent" minOccurs="0"/>
+            <xs:element name="IntermediaryAgent"  type="pay:Agent" minOccurs="0" maxOccurs="3"
+                        comment="Up to 3 intermediary agents in payment chain"/>
+
+            <!-- Charges -->
+            <xs:element name="Charge"             type="pay:Charge" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="ChargeBearer"       type="pay:ChargeBearerType" minOccurs="0"/>
+
+            <!-- Purpose and Remittance -->
+            <xs:element name="Purpose"            type="xs:string" minOccurs="0"/>
+            <xs:element name="PaymentType"        type="xs:string" minOccurs="0"/>
+            <xs:element name="LocalInstrument"    type="xs:string" minOccurs="0"/>
+            <xs:element name="ServiceLevel"       type="xs:string" minOccurs="0"/>
+
+            <!-- Remittance Information -->
+            <xs:element name="RemittanceInfo"     type="pay:RemittanceInfo" minOccurs="0"/>
+
+            <!-- Structured Remittance (Invoices, etc.) -->
+            <xs:element name="StructuredRemittance" type="pay:StructuredRemittance" minOccurs="0"/>
+
+            <!-- Tax Information -->
+            <xs:element name="TaxInfo"            type="pay:TaxInfo" minOccurs="0"/>
+
+            <!-- Garnishment (Legal holds) -->
+            <xs:element name="Garnishment"        type="pay:Garnishment" minOccurs="0"/>
+
+            <!-- Instructions to Creditor Agent -->
+            <xs:element name="CreditorAgentInstruction" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+
+            <!-- Underlying Customer Credit Transfer (for liquidity transfers) -->
+            <xs:element name="UnderlyingTransaction" type="pay:Transaction" minOccurs="0"/>
+
+            <!-- Metadata -->
+            <xs:element name="ProcessingStatus"   type="pay:ProcessingStatus" minOccurs="0"/>
+            <xs:element name="ParsingNotes"       type="xs:string" minOccurs="0" maxOccurs="unbounded"
+                        comment="Free-text notes from parser"/>
+        </xs:sequence>
+        <xs:attribute name="sequenceNumber" type="xs:integer"/>
+    </xs:complexType>
+
+    <xs:simpleType name="PriorityType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="HIGH"/>
+            <xs:enumeration value="NORMAL"/>
+            <xs:enumeration value="URGENT"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="ChargeBearerType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DEBT"/>
+            <xs:enumeration value="CRED"/>
+            <xs:enumeration value="SHAR"/>
+            <xs:enumeration value="SLEV"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         PARTY (Debtor, Creditor, Ultimate Debtor/Creditor)
+         ═══════════════════════════════════════════════════════════ -->
+    <xs:complexType name="Party">
+        <xs:sequence>
+            <xs:element name="Name"               type="xs:string"/>
+            <xs:element name="LEI"                type="xs:string" minOccurs="0"
+                        comment="Legal Entity Identifier"/>
+            <xs:element name="IdentificationType" type="xs:string" minOccurs="0"
+                        comment="e.g., BIC, Tax ID, Passport, National ID"/>
+            <xs:element name="IdentificationValue" type="xs:string" minOccurs="0"/>
+            <xs:element name="CountryOfResidence" type="xs:string" minOccurs="0"/>
+            <xs:element name="PostalAddress"      type="pay:PostalAddress" minOccurs="0"/>
+            <xs:element name="ContactInfo"        type="pay:ContactInfo" minOccurs="0"/>
+            <xs:element name="OrganisationId"     type="pay:OrganisationId" minOccurs="0"
+                        comment="Tax/Registration ID, BIC, etc."/>
+            <xs:element name="PersonalId"         type="pay:PersonalId" minOccurs="0"
+                        comment="Date of birth, passport, etc."/>
+        </xs:sequence>
+        <xs:attribute name="partyType" type="pay:PartyTypeCode"/>
+    </xs:complexType>
+
+    <xs:simpleType name="PartyTypeCode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PERSON"/>
+            <xs:enumeration value="ORGANISATION"/>
+            <xs:enumeration value="UNKNOWN"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="PostalAddress">
+        <xs:sequence>
+            <xs:element name="AddressType"   type="xs:string" minOccurs="0"/>
+            <xs:element name="Street"        type="xs:string" minOccurs="0"/>
+            <xs:element name="BuildingNumber" type="xs:string" minOccurs="0"/>
+            <xs:element name="PostalCode"    type="xs:string" minOccurs="0"/>
+            <xs:element name="City"          type="xs:string" minOccurs="0"/>
+            <xs:element name="Region"        type="xs:string" minOccurs="0"/>
+            <xs:element name="Country"       type="xs:string" minOccurs="0"/>
+            <xs:element name="AddressLine"   type="xs:string" minOccurs="0" maxOccurs="7"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ContactInfo">
+        <xs:sequence>
+            <xs:element name="FullName"      type="xs:string" minOccurs="0"/>
+            <xs:element name="Phone"         type="xs:string" minOccurs="0"/>
+            <xs:element name="Mobile"        type="xs:string" minOccurs="0"/>
+            <xs:element name="Fax"           type="xs:string" minOccurs="0"/>
+            <xs:element name="Email"         type="xs:string" minOccurs="0"/>
+            <xs:element name="JobTitle"      type="xs:string" minOccurs="0"/>
+            <xs:element name="Department"    type="xs:string" minOccurs="0"/>
+            <xs:element name="PreferredMethod" type="xs:string" minOccurs="0"
+                        comment="MAIL, PHONE, EMAIL, etc."/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="OrganisationId">
+        <xs:sequence>
+            <xs:element name="BIC"          type="xs:string" minOccurs="0"/>
+            <xs:element name="LEI"          type="xs:string" minOccurs="0"/>
+            <xs:element name="TaxId"        type="xs:string" minOccurs="0"/>
+            <xs:element name="RegistrationId" type="xs:string" minOccurs="0"/>
+            <xs:element name="OtherIdType"  type="xs:string" minOccurs="0"/>
+            <xs:element name="OtherIdValue" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PersonalId">
+        <xs:sequence>
+            <xs:element name="DateOfBirth"  type="xs:date" minOccurs="0"/>
+            <xs:element name="PlaceOfBirth" type="xs:string" minOccurs="0"/>
+            <xs:element name="Nationality"  type="xs:string" minOccurs="0"/>
+            <xs:element name="IdType"       type="xs:string" minOccurs="0"
+                        comment="PASSPORT, NATIONAL_ID, DRIVING_LICENSE, etc."/>
+            <xs:element name="IdNumber"     type="xs:string" minOccurs="0"/>
+            <xs:element name="OtherIdType"  type="xs:string" minOccurs="0"/>
+            <xs:element name="OtherIdValue" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         AGENT (Bank/FI in payment chain)
+         ═══════════════════════════════════════════════════════════ -->
+    <xs:complexType name="Agent">
+        <xs:sequence>
+            <xs:element name="BIC"              type="xs:string" minOccurs="0"/>
+            <xs:element name="Name"             type="xs:string" minOccurs="0"/>
+            <xs:element name="LEI"              type="xs:string" minOccurs="0"/>
+            <xs:element name="ClearingSystemId" type="xs:string" minOccurs="0"
+                        comment="e.g., CHIPS, FEDWIRE participant ID"/>
+            <xs:element name="OtherIdType"      type="xs:string" minOccurs="0"/>
+            <xs:element name="OtherIdValue"     type="xs:string" minOccurs="0"/>
+            <xs:element name="PostalAddress"    type="pay:PostalAddress" minOccurs="0"/>
+            <xs:element name="Account"          type="pay:Account" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         ACCOUNT
+         ═══════════════════════════════════════════════════════════ -->
+    <xs:complexType name="Account">
+        <xs:sequence>
+            <xs:element name="AccountNumber"   type="xs:string"/>
+            <xs:element name="AccountType"     type="xs:string" minOccurs="0"
+                        comment="e.g., IBAN, BBAN, ACCT"/>
+            <xs:element name="Currency"        type="xs:string" minOccurs="0"/>
+            <xs:element name="AccountName"     type="xs:string" minOccurs="0"/>
+            <xs:element name="ProxyIdentifier" type="xs:string" minOccurs="0"
+                        comment="e.g., email, phone, alias for proxy payment"/>
+            <xs:element name="ProxyType"       type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         CHARGE
+         ═══════════════════════════════════════════════════════════ -->
+    <xs:complexType name="Charge">
+        <xs:sequence>
+            <xs:element name="Amount"        type="xs:decimal"/>
+            <xs:element name="Currency"      type="xs:string"/>
+            <xs:element name="ChargeType"    type="xs:string" minOccurs="0"
+                        comment="e.g., BANK, CORRESPFEE, INSURFEE"/>
+            <xs:element name="ChargingAgent" type="pay:Agent"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         REMITTANCE INFORMATION
+         ═══════════════════════════════════════════════════════════ -->
+    <xs:complexType name="RemittanceInfo">
+        <xs:sequence>
+            <xs:element name="UnstructuredInfo" type="xs:string" minOccurs="0" maxOccurs="unbounded"
+                        comment="Free-text payment description (140 chars each)"/>
+            <xs:element name="StructuredInfo"   type="pay:StructuredRemittance" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="StructuredRemittance">
+        <xs:sequence>
+            <xs:element name="ReferredDocumentInfo" type="pay:ReferredDocument" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="CreditorReference"    type="pay:CreditorReference" minOccurs="0"/>
+            <xs:element name="InvoiceParty"         type="pay:Party" minOccurs="0"
+                        comment="Invoicer/Original creditor"/>
+            <xs:element name="PayeeParty"           type="pay:Party" minOccurs="0"
+                        comment="Invoice recipient"/>
+            <xs:element name="AdditionalInfo"       type="xs:string" minOccurs="0" maxOccurs="3"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ReferredDocument">
+        <xs:sequence>
+            <xs:element name="DocumentType"    type="xs:string"
+                        comment="INVOICE, CREDITNOTE, DEBITNOTE, etc."/>
+            <xs:element name="DocumentNumber"  type="xs:string" minOccurs="0"/>
+            <xs:element name="DocumentDate"    type="xs:date" minOccurs="0"/>
+            <xs:element name="DocumentAmount"  type="xs:decimal" minOccurs="0"/>
+            <xs:element name="LineDetails"     type="pay:LineDetail" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LineDetail">
+        <xs:sequence>
+            <xs:element name="LineType"       type="xs:string" minOccurs="0"/>
+            <xs:element name="LineNumber"     type="xs:string" minOccurs="0"/>
+            <xs:element name="LineDate"       type="xs:date" minOccurs="0"/>
+            <xs:element name="Description"    type="xs:string" minOccurs="0"/>
+            <xs:element name="Amount"         type="xs:decimal" minOccurs="0"/>
+            <xs:element name="QuantityUOM"    type="xs:string" minOccurs="0"/>
+            <xs:element name="QuantityValue"  type="xs:decimal" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CreditorReference">
+        <xs:sequence>
+            <xs:element name="ReferenceType"  type="xs:string" minOccurs="0"
+                        comment="SCOR, OCCC, DISP, etc."/>
+            <xs:element name="ReferenceValue" type="xs:string"/>
+            <xs:element name="Issuer"         type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         TAX INFORMATION
+         ═══════════════════════════════════════════════════════════ -->
+    <xs:complexType name="TaxInfo">
+        <xs:sequence>
+            <xs:element name="CreditorTaxInfo"  type="pay:TaxParty" minOccurs="0"/>
+            <xs:element name="DebtorTaxInfo"    type="pay:TaxParty" minOccurs="0"/>
+            <xs:element name="TaxRecord"        type="pay:TaxRecord" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TaxParty">
+        <xs:sequence>
+            <xs:element name="TaxId"         type="xs:string" minOccurs="0"/>
+            <xs:element name="RegistrationId" type="xs:string" minOccurs="0"/>
+            <xs:element name="TaxType"       type="xs:string" minOccurs="0"
+                        comment="VAT, INCOME, etc."/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TaxRecord">
+        <xs:sequence>
+            <xs:element name="TaxType"         type="xs:string" minOccurs="0"/>
+            <xs:element name="TaxCategory"     type="xs:string" minOccurs="0"/>
+            <xs:element name="TaxRate"         type="xs:decimal" minOccurs="0"/>
+            <xs:element name="TaxableAmount"   type="xs:decimal" minOccurs="0"/>
+            <xs:element name="TaxAmount"       type="xs:decimal" minOccurs="0"/>
+            <xs:element name="TaxPeriodStart"  type="xs:date" minOccurs="0"/>
+            <xs:element name="TaxPeriodEnd"    type="xs:date" minOccurs="0"/>
+            <xs:element name="AdditionalInfo"  type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         GARNISHMENT (Legal hold/wage garnishment)
+         ═══════════════════════════════════════════════════════════ -->
+    <xs:complexType name="Garnishment">
+        <xs:sequence>
+            <xs:element name="GarnishmentType"  type="xs:string"
+                        comment="PZZD (Court order), TRAD (Customs), etc."/>
+            <xs:element name="GarnishmentDate"  type="xs:date" minOccurs="0"/>
+            <xs:element name="ReferenceNumber"  type="xs:string" minOccurs="0"/>
+            <xs:element name="RemittedAmount"   type="xs:decimal" minOccurs="0"/>
+            <xs:element name="GarnisheeParty"   type="pay:Party" minOccurs="0"/>
+            <xs:element name="GarnishmentAdmin" type="pay:Party" minOccurs="0"/>
+            <xs:element name="FamilyMedicalInsuranceIndicator" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="EmployeeTerminationIndicator" type="xs:boolean" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         PROCESSING STATUS (Parser metadata)
+         ═══════════════════════════════════════════════════════════ -->
+    <xs:complexType name="ProcessingStatus">
+        <xs:sequence>
+            <xs:element name="Status"           type="pay:StatusCode"/>
+            <xs:element name="StatusTimestamp"  type="xs:dateTime"/>
+            <xs:element name="ProcessingSystem" type="xs:string" minOccurs="0"/>
+            <xs:element name="ValidationErrors" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Warnings"         type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="StatusCode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PARSED"/>
+            <xs:enumeration value="PARTIAL_PARSE"/>
+            <xs:enumeration value="PARSE_ERROR"/>
+            <xs:enumeration value="VALIDATION_FAILED"/>
+            <xs:enumeration value="READY_FOR_PROCESSING"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         BATCH FOOTER
+         ═══════════════════════════════════════════════════════════ -->
+    <xs:complexType name="BatchFooter">
+        <xs:sequence>
+            <xs:element name="TotalCount"       type="xs:integer"/>
+            <xs:element name="SuccessCount"     type="xs:integer"/>
+            <xs:element name="FailureCount"     type="xs:integer"/>
+            <xs:element name="TotalAmount"      type="xs:decimal" minOccurs="0"/>
+            <xs:element name="ProcessingEndTime" type="xs:dateTime"/>
+            <xs:element name="ProcessingDurationMs" type="xs:long" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
